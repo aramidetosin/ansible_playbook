@@ -1,0 +1,48 @@
+---
+
+- hosts: all
+  become: yes
+  vars:
+    - var1: vim
+    - var2: git
+  tasks:
+    - name: install package on ubuntu
+      when: ansible_os_family == "Debian"
+      apt: name="{{ item }}" state=latest
+      with_items:
+        - "{{var1}}"
+        - "{{var2}}"
+        # - testuser1
+        # - testuser2
+      register: results
+    - name: show results
+      debug: msg={{results}}
+
+    - name: install package on centos
+      when: ansible_os_family == "RedHat"
+      yum: name="{{ item }}" state=latest
+      with_items:
+        - "{{var1}}"
+        - "{{var2}}"
+        # - testuser1
+        # - testuser2
+      register: results
+    - name: show results
+      debug: msg={{results}}
+
+    - name: setup
+      setup: "filter=*"
+      register: results
+
+    - name: show results
+      debug: msg={{results}}
+  
+    
+    # - name: add several users
+    #   user:
+    #     name: "{{ item.name }}"
+    #     state: present
+    #     groups: "{{ item.groups }}"
+    #   with_items:
+    #     - { name: 'testuser1', groups: 'wheel' }
+    #     - { name: 'testuser2', groups: 'root' }

@@ -1,0 +1,13 @@
+[ubuntu]
+minion1 ansible_user=vagrant
+minion2 ansible_user=admin
+
+[vagrant]
+minion1 ansible_user=vagrant
+centos8 ansible_user=vagrant
+
+[centos]
+centos8 ansible_user=vagrant
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3

@@ -1,0 +1,61 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Do uname
+      shell: uname -a > /home/vagrant/results.txt
+      # shell: uname -a
+
+    - name: Who am i
+      shell: whoami >> /home/vagrant/results.txt
+    
+    - name: do ls
+      shell: ls
+    
+    # - name: delete file
+    #   file: 'path=/home/vagrant/results.txt state=absent'
+
+    - name: Copy /etc/hosts file
+      copy: 'src=/etc/hosts dest=/etc/hosts'
+    
+    - name: install apache2
+      when: ansible_os_family == "Debian"
+      apt: 
+        name: apache2
+        state: present
+    - name: Ensure apache2 is enabled
+      when: ansible_os_family == "Debian"
+      service:
+        name: apache2
+        enabled: true
+    - name: Ensure apache2 is running
+      when: ansible_os_family == "Debian"
+      service:
+        name: apache2
+        state: started
+
+    - name: install httpd
+      when: ansible_os_family == "RedHat"
+      yum: 
+        name: httpd
+        state: present
+    - name: Ensure httpd is enabled
+      when: ansible_os_family == "RedHat"
+      service:
+        name: httpd
+        enabled: true
+    - name: Ensure httpd is running
+      when: ansible_os_family == "RedHat"
+      service:
+        name: httpd
+        state: started
+    - name: install VIM
+      when: ansible_os_family == "Debian"
+      apt: 
+        name: vim,tree
+        state: present
+    - name: install VIM
+      when: ansible_os_family == "RedHat"
+      yum: 
+        name: vim,tree
+        state: present
