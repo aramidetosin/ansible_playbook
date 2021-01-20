@@ -1,0 +1,8 @@
+---
+
+- include: /home/vagrant/ansible_playbook/update_systems.yml
+
+- hosts: all
+  become: yes
+  tasks:
+    - include: /home/vagrant/ansible_playbook/install_apache.yml
